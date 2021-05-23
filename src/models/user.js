@@ -18,6 +18,16 @@ const User = mongoose.model('User', {
             }
         }
     },
+    password: {
+        type: String,
+        required:true,
+        trim: true,
+        validate(value) {
+            if(!validator.isLength(value, 8)) {
+                throw new Error('Password must be at least 8 digits long')
+            }
+        }
+    },
     age: {
         type: Number,
         default: 0 
