@@ -51,10 +51,11 @@ router.post("/users", async (req, res) => {
     }
   
     try {
-      const user = await User.findByIdAndUpdate(_id, body, {
-        new: true,
-        runValidators: true,
-      });
+      const user = await User.findById(_id)
+
+      // Find user and replace user data with update data, manually save so pre save middleware can apply to updates
+      updates.forEach(update => user[update] = body[update]);
+      await user.save();
   
       if (!user) {
         res.status(404).send();
