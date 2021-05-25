@@ -51,10 +51,11 @@ router.post("/tasks", async (req, res) => {
     }
   
     try {
-      const task = await Task.findByIdAndUpdate(_id, body, {
-        new: true,
-        runValidators: true,
-      });
+      const task = await Task.findById(_id);
+
+      updates.forEach(update => task[update] = body[update]);
+
+      await task.save();
   
       if (!task) {
         return res.status(404).send();
