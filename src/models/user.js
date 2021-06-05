@@ -56,6 +56,17 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user;
 }
 
+// This removes the password and tokens from every response in every route
+userSchema.methods.toJSON = function () {
+    const user = this;
+    const userObject = user.toObject();
+
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject;
+}
+
 // Generate token N/B .methods are accessible on instances
 userSchema.methods.generateAuthToken = async function () {
     const user = this;
