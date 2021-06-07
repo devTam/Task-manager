@@ -43,6 +43,12 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    'localField': '_id',
+    'foreignField': 'owner'
+})
+
 // authenticate user custom function, N/B .statics are accessible on the models 
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email });
